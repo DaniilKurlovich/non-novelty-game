@@ -20,7 +20,7 @@ public class PlayState extends GameState {
         super(gsm);
         tm = new TileManager("resource/tile/map.xml");
         //font = new Font("resource/font/first_font.png", 16, 16);
-        player = new Player(new Sprite("resource/entity/linkformatted.png", 32, 32), new Vector2f(100, 100), 32);
+        player = new Player(new Sprite("resource/entity/linkformatted.png", 32, 32), new Vector2f(100, 100), 64);
     }
 
     public void update(){
@@ -33,6 +33,7 @@ public class PlayState extends GameState {
         }
     }
     public void render(Graphics2D grphs) {
+        tm.render(grphs);
         //Sprite.drawArray(grphs, font, "KEK", new Vector2f(100, 100), 32, 32,
         //        12,0);
         player.render(grphs);
