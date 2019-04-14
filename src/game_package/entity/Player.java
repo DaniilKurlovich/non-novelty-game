@@ -1,6 +1,7 @@
 package game_package.entity;
 
 import game_package.graphics.Sprite;
+import game_package.states.PlayState;
 import game_package.util.KeyHandler;
 import game_package.util.MouseHandler;
 import game_package.util.Vector2f;
@@ -16,13 +17,24 @@ public class Player extends Entity {
     public void update() {
         super.update();
         move();
+        /*
+        if ((-0.1 < dx) && (dx > 0.1)) {
+            PlayState.map.x += dx;
+        }
+        if ((-0.1 < dy) && (dy > 0.1)) {
+            PlayState.map.y += dy;
+        }
+        */
+        PlayState.map.x += dx;
+        PlayState.map.y += dy;
         pos.x += dx;
         pos.y += dy;
     }
 
     @Override
     public void render(Graphics2D g) {
-        g.drawImage(animation.getImage(), (int)(pos.x), (int)(pos.y), size, size, null);
+        g.drawImage(animation.getImage(), (int)(pos.getWorldVar().x), (int)(pos.getWorldVar().y), size,
+                    size, null);
     }
 
     public void input(MouseHandler mouse, KeyHandler key){
