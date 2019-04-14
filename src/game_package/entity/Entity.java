@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 
 public abstract class Entity {
 
-    private int UN;
     private final int UP = 3;
     private final int DOWN = 2;
     private final int RIGHT = 0;
