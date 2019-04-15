@@ -16,6 +16,7 @@ public class Player extends Entity {
 
     public void update() {
         super.update();
+        action();
         move();
         /*
         if ((-0.1 < dx) && (dx > 0.1)) {
@@ -39,9 +40,9 @@ public class Player extends Entity {
 
     public void input(MouseHandler mouse, KeyHandler key){
 
-        if (mouse.getButton() == -1) {
-            System.out.println(String.format("Player %s, %s", pos.x, pos.y));
-        }
+//        if (mouse.getButton() == -1) {
+//            System.out.println(String.format("Player %s, %s", pos.x, pos.y));
+//        }
 
         if (key.up.isDown){
             up = true;
@@ -68,6 +69,13 @@ public class Player extends Entity {
         } else {
             action = false;
         }
+    }
+
+    public void action(){
+        if (action){
+            PlayState.tm.build_fonar(pos.x, pos.y);
+        }
+        action = false;
     }
 
     public void move(){

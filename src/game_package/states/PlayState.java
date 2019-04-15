@@ -15,7 +15,7 @@ public class PlayState extends GameState {
 
     private Font font;
     private Player player;
-    private TileManager tm;
+    public static TileManager tm;
 
     public static Vector2f map;
 

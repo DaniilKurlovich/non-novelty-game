@@ -5,6 +5,7 @@ import game_package.graphics.Sprite;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import org.w3c.dom.Element;
@@ -85,6 +86,13 @@ public class TileManager {
             System.out.println(e);
             System.out.println("ERROR - TILEMANAGER: can not read tilemap");
         }
+    }
+
+    public void build_fonar(float x, float y){
+        int dx = (int)(x/64);
+        int dy = (int)(y/64);
+        ((TileMapNorm)tm.get(1)).build(dx, dy, new Sprite("resource/tile/map_tile.png", 16, 16),
+                new int[][]{{729, 761, 793}, {730, 762, 794}}, 32);
     }
 
     public void render(Graphics2D g) {
