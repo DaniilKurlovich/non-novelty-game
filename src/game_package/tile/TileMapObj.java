@@ -34,7 +34,7 @@ public class TileMapObj extends TileMap {
         for(int i = 0; i < (width * height); i++) {
             int temp = Integer.parseInt(block[i].replaceAll("\\s+",""));
             if(temp != 0) {
-                if(temp == 172) {
+                if(temp == 0) {
                     tempBlock = new HoleBlock(sprite.getSprite((int) ((temp - 1) % tileColumns),
                             (int) ((temp - 1) / tileColumns) ), new Vector2f((int) (i % width) * tileWidth,
                             (int) (i / height) * tileHeight), tileWidth, tileHeight);
@@ -49,10 +49,11 @@ public class TileMapObj extends TileMap {
         }
     }
 
+    public void render(Graphics2D grphs, int x, int y){
 
-    public void render(Graphics2D grphs){
         for (Block block: blocks.values()){
             block.render(grphs);
+
         }
     }
 }

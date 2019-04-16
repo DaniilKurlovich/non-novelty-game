@@ -42,7 +42,8 @@ public class PlayState extends GameState {
         }
     }
     public void render(Graphics2D grphs) {
-        tm.render(grphs);
+        tm.render(grphs,(int)Vector2f.worldX, (int)Vector2f.worldY );
+
         //Sprite.drawArray(grphs, font, "KEK", new Vector2f(100, 100), 32, 32,
         //        12,0);
         player.render(grphs);

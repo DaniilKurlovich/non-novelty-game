@@ -95,9 +95,9 @@ public class TileManager {
                 new int[][]{{729, 761, 793}, {730, 762, 794}}, 32);
     }
 
-    public void render(Graphics2D g) {
+    public void render(Graphics2D g, int x, int y) {
         for(int i = 0; i < tm.size(); i++) {
-            tm.get(i).render(g);
+            tm.get(i).render(g, x, y);
         }
     }
 }

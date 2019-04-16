@@ -43,12 +43,12 @@ public class TileMapNorm extends TileMap {
                 blocks.put(String.format("%s,%s", x+i, y+j),
                         new NormBlock(sprite.getSprite((int)((sprit_id[i][j] - 1) % coulums),
                                                        (int)((sprit_id[i][j] - 1) / coulums)),
-                                new Vector2f((x+i+1) * 64, (y + j) * 64), 64, 64));
+                                new Vector2f((x+i) * 64, (y + j) * 64), 64, 64));
             }
         }
     }
 
-    public void render(Graphics2D grphs){
+    public void render(Graphics2D grphs, int x, int y){
         for (Block block: blocks.values()){
             block.render(grphs);
         }
