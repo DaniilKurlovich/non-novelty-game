@@ -3,7 +3,9 @@ package game_package.tile;
 import game_package.graphics.Sprite;
 import game_package.tile.blocks.Block;
 import game_package.tile.blocks.HoleBlock;
+import game_package.tile.blocks.NormBlock;
 import game_package.tile.blocks.ObjBlock;
+import game_package.util.AABB;
 import game_package.util.Vector2f;
 
 import java.awt.*;
@@ -50,10 +52,12 @@ public class TileMapObj extends TileMap {
     }
 
     public void render(Graphics2D grphs, int x, int y){
-
-        for (Block block: blocks.values()){
-            block.render(grphs);
-
+        for (int i =0; i<22; i++){
+            for (int j=0; j<22; j++){
+                String key = String.format("%s,%s", (x / 64) + i, (y / 64) + j);
+                if (blocks.containsKey(key))
+                blocks.get(key).render(grphs);
+            }
         }
     }
 }
