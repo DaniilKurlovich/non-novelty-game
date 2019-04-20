@@ -37,9 +37,6 @@ public class PlayState extends GameState {
     }
     public void input(MouseHandler mouse, KeyHandler key) {
         player.input(mouse, key);
-        if (key.up.isDown){
-            System.out.println("Down pressed");
-        }
     }
     public void render(Graphics2D grphs) {
         tm.render(grphs,(int)Vector2f.worldX, (int)Vector2f.worldY );

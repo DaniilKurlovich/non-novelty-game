@@ -73,7 +73,7 @@ public class Player extends Entity {
 
     public void action(){
         if (action){
-            PlayState.tm.build_fonar(pos.x, pos.y);
+            PlayState.tm.build(pos.x, pos.y, new int[][]{{729, 761, 793}, {730, 762, 794}});
         }
         action = false;
     }

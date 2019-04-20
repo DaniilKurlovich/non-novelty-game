@@ -1,5 +1,6 @@
 package game_package.tile;
 
+import com.sun.jndi.toolkit.url.Uri;
 import game_package.graphics.Sprite;
 
 import java.awt.*;
@@ -7,14 +8,20 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import org.w3c.dom.Element;
+import javafx.util.Pair;
+import org.w3c.dom.*;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.xml.sax.SAXException;
 
 public class TileManager {
@@ -51,9 +58,9 @@ public class TileManager {
         try {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
-            path = "resource/tile/map.xml";
-            Document doc = builder.parse(new File(getClass().getClassLoader().getResource(path).toURI()));
-            doc.getDocumentElement().normalize();
+            path = "src/resource/tile/map.xml";
+            Document doc = builder.parse(new File(path).toURI().toString());
+//            doc.getDocumentElement().normalize();
 
             NodeList list = doc.getElementsByTagName("tileset");
             Node node = list.item(0);
@@ -73,9 +80,11 @@ public class TileManager {
                 if(i <= 0) {
                     width = Integer.parseInt(eElement.getAttribute("width"));
                     height = Integer.parseInt(eElement.getAttribute("height"));
+                    data[i] = eElement.getElementsByTagName("data").item(0).getTextContent();
                 }
-
-                data[i] = eElement.getElementsByTagName("data").item(0).getTextContent();
+                else {
+                    data[i] =  doc.getElementsByTagName("layer").item(1).getTextContent();
+                }
                 if(i >= 1) {
                     tm.add(new TileMapNorm(data[i], sprite, width, height, blockWidth, blockHeight, tileColumns));
                 } else {
@@ -88,11 +97,57 @@ public class TileManager {
         }
     }
 
-    public void build_fonar(float x, float y){
+    public void build(float x, float y, int[][] item){
         int dx = (int)(x/64);
         int dy = (int)(y/64);
-        ((TileMapNorm)tm.get(1)).build(dx, dy, new Sprite("resource/tile/map_tile.png", 16, 16),
-                new int[][]{{729, 761, 793}, {730, 762, 794}}, 32);
+        HashMap<String, String> modifed = ((TileMapNorm)tm.get(1)).build(dx, dy, new Sprite("resource/tile/map_tile.png", 16, 16),
+                item, 32);
+        if (modifed != null){
+            save_vhanges(modifed);
+        }
+    }
+
+    private void save_vhanges(HashMap<String, String> changes){
+        try {
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = builderFactory.newDocumentBuilder();
+            String path = "src/resource/tile/map.xml";
+            Document doc = builder.parse(new File(path).toURI().toString());
+            Node staff = doc.getElementsByTagName("layer").item(1);
+            String data = staff.getTextContent();
+            String[] lines = data.split("\n");
+            List<String[]> characters = new ArrayList<>();
+
+            for(String line:lines){
+                if (!line.isEmpty()) {
+                    characters.add(line.split(","));
+                }
+            }
+
+            for (String change:changes.keySet()){
+                String[] keys = change.split(",");
+                characters.get(Integer.parseInt(keys[1]) + 1)[Integer.parseInt(keys[0])] = changes.get(change);
+            }
+
+            List<String> result_line = new ArrayList<>();
+            for(String[] line:characters){
+                if (line.length > 1)
+                    result_line.add(String.join(",", line) + ",");
+            }
+            String result_data = String.join("\n", result_line);
+            staff.setTextContent(result_data.substring(0, result_data.length() - 1) + "\n");
+
+//          Запись в файл.
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(path).toURI().toString());
+            transformer.transform(source, result);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            System.out.println("ERROR - TILEMANAGER: can not read tilemap");
+        }
     }
 
     public void render(Graphics2D g, int x, int y) {

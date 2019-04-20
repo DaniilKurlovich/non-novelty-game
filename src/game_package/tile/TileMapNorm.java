@@ -4,15 +4,17 @@ import game_package.graphics.Sprite;
 import game_package.tile.blocks.Block;
 import game_package.tile.blocks.NormBlock;
 import game_package.util.Vector2f;
+import javafx.util.Pair;
 
 import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TileMapNorm extends TileMap {
 
-    private HashMap<String, Block> blocks;
+    public HashMap<String, Block> blocks;
 
     public TileMapNorm(String data, Sprite sprite, int width, int height, int tileWidth, int tileHeight,
                        int tileColumns){
@@ -30,22 +32,28 @@ public class TileMapNorm extends TileMap {
         }
     }
 
-    public void build(int x, int y, Sprite sprite, int[][] sprit_id, int coulums){
+    public HashMap<String, String> build(int x, int y, Sprite sprite, int[][] sprit_id, int coulums){
+//        Проверяет есть ли возможность построить что либо. Либо строит и возвращает true, сли что-то мешает, то не
+//        то не строит и возвращает false.
+        HashMap<String, String> result_changes = new HashMap<String, String>();
         for (int i = 0; i<sprit_id.length; i++) {
             for (int j = 0; j < sprit_id[i].length; j++) {
                 if (blocks.containsKey(String.format("%s,%s", x+i, y+j))){
-                    return;
+                    return null;
                 }
             }
         }
         for (int i = 0; i<sprit_id.length; i++) {
             for (int j = 0; j < sprit_id[i].length; j++) {
-                blocks.put(String.format("%s,%s", x+i, y+j),
+                String position = String.format("%s,%s", x+i, y+j);
+                result_changes.put(position, Integer.toString(sprit_id[i][j]));
+                blocks.put(position,
                         new NormBlock(sprite.getSprite((int)((sprit_id[i][j] - 1) % coulums),
                                                        (int)((sprit_id[i][j] - 1) / coulums)),
                                 new Vector2f((x+i) * 64, (y + j) * 64), 64, 64));
             }
         }
+        return result_changes;
     }
 
     public void render(Graphics2D grphs, int x, int y){
