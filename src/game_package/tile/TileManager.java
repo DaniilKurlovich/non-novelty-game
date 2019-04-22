@@ -1,28 +1,21 @@
 package game_package.tile;
 
-import com.sun.jndi.toolkit.url.Uri;
 import game_package.graphics.Sprite;
 
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javafx.util.Pair;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.xml.sax.SAXException;
 
 public class TileManager {
 
@@ -103,11 +96,11 @@ public class TileManager {
         HashMap<String, String> modifed = ((TileMapNorm)tm.get(1)).build(dx, dy, new Sprite("resource/tile/map_tile.png", 16, 16),
                 item, 32);
         if (modifed != null){
-            save_vhanges(modifed);
+            save_сhanges(modifed);
         }
     }
 
-    private void save_vhanges(HashMap<String, String> changes){
+    private void save_сhanges(HashMap<String, String> changes){
         try {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();

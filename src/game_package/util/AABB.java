@@ -1,6 +1,10 @@
 package game_package.util;
 
 import game_package.entity.Entity;
+import game_package.tile.TileMapNorm;
+import game_package.tile.TileMapObj;
+import game_package.tile.blocks.Block;
+import game_package.tile.blocks.HoleBlock;
 
 public class AABB {
 
@@ -54,6 +58,9 @@ public class AABB {
     public void setXOffset(float offset){ this.xOffset = offset; }
     public void setYOffset(float offset) { this.yOffset = offset; }
 
+    public float getyOffset() { return this.yOffset; }
+    public float getxOffset() { return this.xOffset; }
+
     public boolean collides(AABB bBox){
         float ax = pos.getWorldVar().x + xOffset + w / 2;
         float ay = pos.getWorldVar().y + yOffset + h / 2;
@@ -81,4 +88,39 @@ public class AABB {
         }
         return false;
     }
+
+    public boolean collisionTile(float dx, float dy){
+        /*
+        for (int c = 0; c < 4; c++){
+            int xt = (int) ( (pos.x + dx) + (c % 2) * w + xOffset) / 64;
+            int yt = (int) ( (pos.y + dy) + (int)(c / 2) * h + yOffset) / 64;
+
+            if (TileMapObj.blocks.containsKey(String.valueOf(xt) + "," + String.valueOf(yt))){
+                Block block = TileMapObj.blocks.get(String.valueOf(xt) + "," + String.valueOf(yt));
+                if (block instanceof HoleBlock)
+                    return collisionHole(dx, dy, xt, yt, block);
+                return block.update(this);
+            }
+        }
+        */
+        return false;
+    }
+
+    public boolean collisionHole(float dx, float dy, float xt, float yt, Block block){
+        int nextDx = (int) (( (pos.x + dx ) + xOffset) / 64 + w / 64);
+        int nextDy = (int) (( (pos.y + dy ) + yOffset) / 64 + h / 64);
+
+        if ((nextDx == yt + 1) || (nextDx == xt + 1)){
+            if (TileMapObj.blocks.containsKey(String.valueOf(xt) + "," + String.valueOf(yt))){
+                Block neighbBlock = TileMapObj.blocks.get(String.valueOf(xt) + "," + String.valueOf(yt));
+                return neighbBlock.update(this);
+            } else {
+                if (block.isInside(this)){
+                    return block.update(this);
+                }
+            }
+        }
+        return false;
+    }
+
 }

@@ -14,6 +14,19 @@ public class HoleBlock extends Block {
 
     @Override
     public boolean update(AABB col) {
+
+        if (isInside(col)){
+            System.out.println("TEST");
+        }
+
+        return false;
+    }
+
+    public boolean isInside(AABB coll){
+        if (coll.getPos().x + coll.getxOffset() < pos.x) return true;
+        if (coll.getPos().y + coll.getyOffset() < pos.y) return true;
+        if (w + pos.x < coll.getWidth() + (coll.getPos().x + coll.getxOffset())) return false;
+        if (h + pos.y < coll.getHeight() + (coll.getPos().y + coll.getyOffset())) return false;
         return true;
     }
 

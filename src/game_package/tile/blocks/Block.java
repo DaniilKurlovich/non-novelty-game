@@ -21,6 +21,7 @@ public abstract class Block {
     }
 
     public abstract boolean update(AABB col);
+    public abstract boolean isInside(AABB col);
 
     public void render(Graphics2D grps){
         grps.drawImage(img, (int)pos.getWorldVar().x, (int)pos.getWorldVar().y, w, h, null);

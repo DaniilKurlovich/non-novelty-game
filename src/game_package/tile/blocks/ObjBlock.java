@@ -17,6 +17,11 @@ public class ObjBlock extends Block {
         return true;
     }
 
+    @Override
+    public boolean isInside(AABB col) {
+        return false;
+    }
+
     public void render(Graphics2D grphs){
         grphs.setColor(Color.white);
         grphs.drawRect((int) pos.getWorldVar().x, (int) pos.getWorldVar().y, w, h);
