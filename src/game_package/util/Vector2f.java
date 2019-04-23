@@ -31,8 +31,7 @@ public class Vector2f {
     public void setY(float i) { y = i; }
 
     public void setVector(Vector2f v) {
-        this.x = v.x;
-        this.y = v.y;
+        setVector(v.x, v.y);
     }
 
     public void setVector(float x, float y){

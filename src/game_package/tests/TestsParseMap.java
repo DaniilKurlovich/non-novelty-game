@@ -9,9 +9,9 @@ import game_package.tile.TileMapNorm;
 import game_package.tile.TileMapObj;
 import org.junit.Test;
 
-public class Tests {
+public class TestsParseMap {
     @Test
-    public void parseMapTestCoordinates() throws Exception {
+    public void parseMapTestCoordinates() {
         String[] obj_coor = new String[]{"0,0", "1,0", "0,1", "1,1"};
         String[] norm_coor = new String[]{"0,0", "1,0", "0,1", "1,1"};
         TileManager tileTest = new TileManager("src/resource/test_rsc/test_map.xml",

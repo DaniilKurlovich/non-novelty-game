@@ -116,7 +116,7 @@ public class TileManager {
 
             for (String change:changes.keySet()){
                 String[] keys = change.split(",");
-                characters.get(Integer.parseInt(keys[1]) + 1)[Integer.parseInt(keys[0])] = changes.get(change);
+                characters.get(Integer.parseInt(keys[1]))[Integer.parseInt(keys[0])] = changes.get(change);
             }
 
             List<String> result_line = new ArrayList<>();

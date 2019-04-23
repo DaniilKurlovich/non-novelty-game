@@ -14,7 +14,7 @@ import java.util.List;
 
 public class TileMapNorm extends TileMap {
 
-    public HashMap<String, Block> blocks;
+    public static HashMap<String, Block> blocks;
 
     public TileMapNorm(String data, Sprite sprite, int width, int height, int tileWidth, int tileHeight,
                        int tileColumns){
@@ -36,6 +36,7 @@ public class TileMapNorm extends TileMap {
 //        Проверяет есть ли возможность построить что либо. Либо строит и возвращает true, сли что-то мешает, то не
 //        то не строит и возвращает false.
         HashMap<String, String> result_changes = new HashMap<String, String>();
+        x = x + 2;
         for (int i = 0; i<sprit_id.length; i++) {
             for (int j = 0; j < sprit_id[i].length; j++) {
                 if (blocks.containsKey(String.format("%s,%s", x+i, y+j))){

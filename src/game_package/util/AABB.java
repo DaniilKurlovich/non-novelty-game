@@ -5,6 +5,8 @@ import game_package.tile.TileMapNorm;
 import game_package.tile.TileMapObj;
 import game_package.tile.blocks.Block;
 import game_package.tile.blocks.HoleBlock;
+import game_package.tile.blocks.NormBlock;
+import game_package.tile.blocks.ObjBlock;
 
 public class AABB {
 
@@ -90,19 +92,18 @@ public class AABB {
     }
 
     public boolean collisionTile(float dx, float dy){
-        /*
         for (int c = 0; c < 4; c++){
             int xt = (int) ( (pos.x + dx) + (c % 2) * w + xOffset) / 64;
             int yt = (int) ( (pos.y + dy) + (int)(c / 2) * h + yOffset) / 64;
 
-            if (TileMapObj.blocks.containsKey(String.valueOf(xt) + "," + String.valueOf(yt))){
-                Block block = TileMapObj.blocks.get(String.valueOf(xt) + "," + String.valueOf(yt));
-                if (block instanceof HoleBlock)
+            if (TileMapNorm.blocks.containsKey(String.valueOf(xt) + "," + String.valueOf(yt))){
+                Block block = TileMapNorm.blocks.get(String.valueOf(xt) + "," + String.valueOf(yt));
+                if (!(block instanceof NormBlock)) {
                     return collisionHole(dx, dy, xt, yt, block);
+                }
                 return block.update(this);
             }
         }
-        */
         return false;
     }
 
