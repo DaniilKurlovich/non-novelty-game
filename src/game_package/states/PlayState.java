@@ -21,7 +21,7 @@ public class PlayState extends GameState {
 
     public PlayState(GameStateManager gsm){
         super(gsm);
-        tm = new TileManager("resource/tile/map.xml");
+        tm = new TileManager("src/resource/tile/map.xml", "resource/tile/map_tile.png");
         map = new Vector2f();
 
         Vector2f.setWorldVar(map.x, map.y);

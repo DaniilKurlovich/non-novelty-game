@@ -5,7 +5,7 @@ import game_package.util.MouseHandler;
 
 import java.awt.*;
 
-public abstract class GameState {
+public abstract class  GameState {
 
     private GameStateManager gsm;
 

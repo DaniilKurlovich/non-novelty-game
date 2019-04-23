@@ -25,19 +25,17 @@ public class TileManager {
         tm = new ArrayList<TileMap>();
     }
 
-    public TileManager(String path) {
+    public TileManager(String path, String spritePath) {
         tm = new ArrayList<TileMap>();
-        addTileMap(path, 64, 64);
+        addTileMap(path, spritePath, 64, 64);
     }
 
-    public TileManager(String path, int blockWidth, int blockHeight) {
+    public TileManager(String path, String spritePath, int blockWidth, int blockHeight) {
         tm = new ArrayList<TileMap>();
-        addTileMap(path, blockWidth, blockHeight);
+        addTileMap(path, spritePath, blockWidth, blockHeight);
     }
 
-    private void addTileMap(String path, int blockWidth, int blockHeight) {
-        String imagePath;
-
+    private void addTileMap(String path, String spritePath, int blockWidth, int blockHeight) {
         int width = 0;
         int height = 0;
         int tileWidth;
@@ -51,7 +49,6 @@ public class TileManager {
         try {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
-            path = "src/resource/tile/map.xml";
             Document doc = builder.parse(new File(path).toURI().toString());
 //            doc.getDocumentElement().normalize();
 
@@ -59,11 +56,10 @@ public class TileManager {
             Node node = list.item(0);
             Element eElement = (Element) node;
 
-            imagePath = eElement.getAttribute("name");
             tileWidth = Integer.parseInt(eElement.getAttribute("tilewidth"));
             tileHeight = Integer.parseInt(eElement.getAttribute("tileheight"));
             tileColumns =  Integer.parseInt(eElement.getAttribute("columns"));
-            sprite = new Sprite("resource/tile/map_tile.png", tileWidth, tileHeight);
+            sprite = new Sprite(spritePath, tileWidth, tileHeight);
             list = doc.getElementsByTagName("layer");
             layers = list.getLength();
 
@@ -78,6 +74,7 @@ public class TileManager {
                 else {
                     data[i] =  doc.getElementsByTagName("layer").item(1).getTextContent();
                 }
+
                 if(i >= 1) {
                     tm.add(new TileMapNorm(data[i], sprite, width, height, blockWidth, blockHeight, tileColumns));
                 } else {
