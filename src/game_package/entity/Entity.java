@@ -39,7 +39,13 @@ public abstract class Entity {
     protected AABB hitBounds;
     protected AABB bounds;
 
-    public Entity(Sprite sprt, Vector2f vector, int size) {
+    private int hp;
+
+    public Entity(Sprite sprt, Vector2f vector, int size, int hp) {
+        // game logic
+        this.hp = hp;
+
+        // graphics
         this.sprite = sprt;
         this.pos = vector;
         this.size = size;

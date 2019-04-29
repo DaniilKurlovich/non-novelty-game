@@ -15,7 +15,7 @@ public class GameStateManager {
     public static final int GAME = 0;
     public static final int MENU = 1;
     public static final int PAUSE = 2;
-    public static final int GAMEOVER = 3;
+    //public static final int GAMEOVER = 3;
 
     public GameStateManager(){
         map = new Vector2f(GamePanel.width, GamePanel.height);
@@ -35,9 +35,9 @@ public class GameStateManager {
         if (state == PAUSE){
             states.add(new PauseState(this));
         }
-        if (state == GAMEOVER){
-            states.add(new GameOverState(this));
-        }
+        //if (state == GAMEOVER){
+        //    states.add(new GameOverState(this));
+        //}
     }
 
     public void addAndPop(int state){ states.remove(state); }

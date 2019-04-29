@@ -1,6 +1,7 @@
 package game_package.entity;
 
 import game_package.graphics.Sprite;
+import game_package.patterns.PositionData;
 import game_package.states.PlayState;
 import game_package.util.KeyHandler;
 import game_package.util.MouseHandler;
@@ -10,8 +11,8 @@ import java.awt.*;
 
 public class Player extends Entity {
 
-    public Player(Sprite sprite, Vector2f orgin, int size){
-        super(sprite, orgin, size);
+    public Player(Sprite sprite, Vector2f orgin, int size, int hp){
+        super(sprite, orgin, size, hp);
         acc = (float)2;
         maxSpeed = (float)3;
         bounds.setWidth(42);
@@ -32,23 +33,19 @@ public class Player extends Entity {
             PlayState.map.y += dy;
             pos.y += dy;
         }
+        PlayState.observer.setPosition(pos);
     }
 
     @Override
     public void render(Graphics2D g) {
-        g.setColor(Color.blue);
-        g.drawRect((int)(pos.getWorldVar().x + bounds.getxOffset()), (int)(pos.getWorldVar().y + bounds.getyOffset()),
-                (int)bounds.getWidth(), (int)bounds.getHeight());
+        //g.setColor(Color.blue);
+        //g.drawRect((int)(pos.getWorldVar().x + bounds.getxOffset()), (int)(pos.getWorldVar().y + bounds.getyOffset()),
+        //           (int)bounds.getWidth(), (int)bounds.getHeight());
         g.drawImage(animation.getImage(), (int)(pos.getWorldVar().x), (int)(pos.getWorldVar().y), size,
                     size, null);
     }
 
     public void input(MouseHandler mouse, KeyHandler key){
-
-//        if (mouse.getButton() == -1) {
-//            System.out.println(String.format("Player %s, %s", pos.x, pos.y));
-//        }
-
         if (key.up.isDown){
             up = true;
         } else {
