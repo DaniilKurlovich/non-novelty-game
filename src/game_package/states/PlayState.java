@@ -43,6 +43,7 @@ public class PlayState extends GameState {
     public void update(){
         Vector2f.setWorldVar(map.x, map.y);
         testEnemy.update();
+        testEnemy.goToPlayerAndAttackHim(map);
         player.update();
     }
 

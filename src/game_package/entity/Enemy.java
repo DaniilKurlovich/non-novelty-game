@@ -16,7 +16,14 @@ public class Enemy extends Entity{
     }
 
     public void goToPlayerAndAttackHim(Vector2f posPlayer){
-        System.out.println("I find him");
+        //System.out.println(posPlayer + " " + pos);
+        if ((Math.abs(posPlayer.x - pos.x) < 800) && (Math.abs(posPlayer.y - pos.y) < 800)) {
+            int x = (int) ((pos.x - posPlayer.x) / 100);
+            int y = (int) ((pos.y - posPlayer.y) / 100);
+
+            pos.x = pos.x + x;
+            pos.y = pos.y + y;
+        }
     }
 
     @Override
