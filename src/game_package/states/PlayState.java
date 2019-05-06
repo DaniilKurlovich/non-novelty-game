@@ -30,20 +30,21 @@ public class PlayState extends GameState {
         map = new Vector2f();
         observer = new PositionData();
 
+        System.out.println(map.toString());
+
         Vector2f.setWorldVar(map.x, map.y);
 
         player = new Player(new Sprite("resource/entity/linkformatted.png", 32, 32),
                             new Vector2f((int) GamePanel.width / 2,(int)GamePanel.height / 2), 64, 100);
 
         testEnemy = new Enemy(new Sprite("resource/entity/linkformatted.png", 32, 32),
-                              new Vector2f((int) GamePanel.width / 2 + 20,(int)GamePanel.height / 2 + 20), 64, 12);
+                              new Vector2f((int) GamePanel.width / 2 + 45,(int)GamePanel.height / 2 + 70), 64, 12);
 
     }
 
     public void update(){
         Vector2f.setWorldVar(map.x, map.y);
-        testEnemy.update();
-        testEnemy.goToPlayerAndAttackHim(map);
+        testEnemy.update(player);
         player.update();
     }
 
