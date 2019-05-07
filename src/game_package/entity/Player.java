@@ -11,8 +11,11 @@ import java.awt.*;
 
 public class Player extends Entity {
 
-    public Player(Sprite sprite, Vector2f orgin, int size, int hp){
-        super(sprite, orgin, size, hp);
+    private int power = 5;
+    private int hp = 100;
+
+    public Player(Sprite sprite, Vector2f orgin, int size){
+        super(sprite, orgin, size);
         acc = (float)2;
         maxSpeed = (float)3;
         bounds.setWidth(42);
@@ -21,8 +24,20 @@ public class Player extends Entity {
         bounds.setYOffset(40);
     }
 
-    public void update() {
+    @Override
+    public void GameCharacters(int hp, int power) {
+        this.hp = hp;
+        this.power = power;
+    }
+
+    public void update(Enemy enemy) {
         super.update();
+
+        if (hitBounds.collides(enemy.getBounds()) && attack){
+            enemy.getHitted(this.power);
+            System.out.println("Enemy hitted");
+        }
+
         action();
         move();
         if (!bounds.collisionTile(dx, 0)) {
@@ -41,11 +56,32 @@ public class Player extends Entity {
         //g.setColor(Color.blue);
         //g.drawRect((int)(pos.getWorldVar().x + bounds.getxOffset()), (int)(pos.getWorldVar().y + bounds.getyOffset()),
         //           (int)bounds.getWidth(), (int)bounds.getHeight());
+
+        if (attack){
+            g.setColor(Color.red);
+            g.drawRect((int) (hitBounds.getPos().getWorldVar().x + hitBounds.getxOffset()),
+                       (int) (hitBounds.getPos().getWorldVar().y + hitBounds.getyOffset()),
+                       (int)hitBounds.getWidth(), (int)hitBounds.getHeight());
+        }
+
         g.drawImage(animation.getImage(), (int)(pos.getWorldVar().x), (int)(pos.getWorldVar().y), size,
                     size, null);
     }
 
+    @Override
+    public void setDirectionsOnSprite(int up, int down, int left, int right) {
+        UP = up;
+        DOWN = down;
+        LEFT = left;
+        RIGHT = right;
+    }
+
     public void input(MouseHandler mouse, KeyHandler key){
+        if (mouse.getButton() != -1) {
+            attack = true;
+        } else {
+            attack = false;
+        }
         if (key.up.isDown){
             up = true;
         } else {

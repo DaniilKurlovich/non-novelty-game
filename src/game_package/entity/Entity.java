@@ -10,11 +10,11 @@ import java.awt.image.BufferedImage;
 
 public abstract class Entity {
 
-    private final int UP = 3;
-    private final int DOWN = 2;
-    private final int RIGHT = 0;
-    private final int LEFT = 1;
-    private int currentAnimation;
+    protected int UP = 3;
+    protected int DOWN = 2;
+    protected int RIGHT = 0;
+    protected int LEFT = 1;
+    protected int currentAnimation;
 
     protected Animation animation;
     private Sprite sprite;
@@ -26,6 +26,7 @@ public abstract class Entity {
     protected boolean left;
     protected boolean right;
     protected boolean action;
+    protected boolean attack;
     protected int attackSpeed;
     protected int attackDuration;
 
@@ -41,7 +42,7 @@ public abstract class Entity {
 
     private int hp;
 
-    public Entity(Sprite sprt, Vector2f vector, int size, int hp) {
+    public Entity(Sprite sprt, Vector2f vector, int size) {
         // game logic
         this.hp = hp;
 
@@ -51,7 +52,8 @@ public abstract class Entity {
         this.size = size;
 
         bounds = new AABB(vector, size, size);
-        hitBounds = new AABB(new Vector2f(vector.x + size / 2, vector.y), size, size);
+        hitBounds = new AABB(vector, size, size);
+        hitBounds.setXOffset(size / 2);
 
         animation = new Animation();
         setAnimation(DOWN, sprt.getSpriteArrayWithIndex(RIGHT), 10);
@@ -60,6 +62,8 @@ public abstract class Entity {
     public void setSprite(Sprite sprite){
         this.sprite = sprite;
     }
+
+    public abstract void GameCharacters(int hp, int power);
 
     public int getSize() { return size; }
     public void setSize(int size) { this.size = size; }
@@ -108,19 +112,19 @@ public abstract class Entity {
     private void setHitBoxDirection() {
         if (up){
             hitBounds.setYOffset(-size / 2);
-            hitBounds.setXOffset(-size / 2);
+            hitBounds.setXOffset(0);
         }
         else if (down){
             hitBounds.setYOffset(size / 2);
-            hitBounds.setYOffset(-size / 2);
+            hitBounds.setXOffset(0);
         }
         else if (left){
-            hitBounds.setXOffset(-size);
+            hitBounds.setXOffset(-size / 2);
             hitBounds.setYOffset(0);
         }
         else if (right){
             hitBounds.setYOffset(0);
-            hitBounds.setXOffset(0);
+            hitBounds.setXOffset(size / 2);
         }
     }
 
@@ -131,4 +135,6 @@ public abstract class Entity {
     }
 
     public abstract void render(Graphics2D g);
+
+    public abstract void setDirectionsOnSprite(int up, int down, int left, int right);
 }
