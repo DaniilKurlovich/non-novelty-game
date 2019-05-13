@@ -34,7 +34,7 @@ public class PlayState extends GameState {
 
         player = new Player(new Sprite("resource/entity/linkformatted.png", 32, 32),
                             new Vector2f((int) GamePanel.width / 2,(int)GamePanel.height / 2), 64);
-        testEnemy = new Enemy(new Sprite("resource/entity/ley-2.png", 71, 68),
+        testEnemy = new Enemy(new Sprite("resource/entity/linkformatted.png", 32, 32),
                               new Vector2f((int) GamePanel.width / 2 + 45,(int)GamePanel.height / 2 + 70), 64);
         testEnemy.setDirectionsOnSprite(3, 0, 1, 2);
     }

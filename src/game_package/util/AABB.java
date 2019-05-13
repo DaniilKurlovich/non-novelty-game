@@ -112,7 +112,7 @@ public class AABB {
         int nextDx = (int) (( (pos.x + dx ) + xOffset) / 64 + w / 64);
         int nextDy = (int) (( (pos.y + dy ) + yOffset) / 64 + h / 64);
 
-        if ((nextDx == yt + 1) || (nextDx == xt + 1)){
+        if ((nextDy == yt + 1) || (nextDx == xt + 1)){
             if (TileMapObj.blocks.containsKey(String.valueOf(xt) + "," + String.valueOf(yt))){
                 Block neighbBlock = TileMapObj.blocks.get(String.valueOf(xt) + "," + String.valueOf(yt));
                 return neighbBlock.update(this);

@@ -10,7 +10,8 @@ public class Enemy extends Entity {
 
     private AABB colls;
 
-    private int hp = 20;
+    private int maxHp = 500;
+    private int hp = maxHp;
     private int power = 5;
 
     public Enemy(Sprite sprt, Vector2f vector, int size) {
@@ -59,6 +60,11 @@ public class Enemy extends Entity {
     @Override
     public void render(Graphics2D g) {
         if (hp > 0) {
+            g.setColor(Color.black);
+            g.fillRect((int) (pos.getWorldVar().x), (int) (pos.getWorldVar().y), size, 5);
+            g.setColor(Color.red);
+            g.fillRect((int) (pos.getWorldVar().x), (int) (pos.getWorldVar().y),
+                    (int)(size * ((double)this.hp / (double)this.maxHp)), 5);
             g.drawImage(animation.getImage(), (int) (pos.getWorldVar().x), (int) (pos.getWorldVar().y), size,
                     size, null);
 
