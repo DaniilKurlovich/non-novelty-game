@@ -57,6 +57,23 @@ public class TileMapNorm extends TileMap {
         return result_changes;
     }
 
+    public HashMap<String, String> destroy(int x, int y, int coulums) {
+        HashMap<String, String> result_changes = new HashMap<String, String>();
+        for (int i = -2; i < 2; i++) {
+            for (int j = -2; j < 2; j++) {
+                String position = String.format("%s,%s", x + i, y + j);
+                if (blocks.get(position) != null) {
+                    result_changes.put(position, "0");
+                    blocks.remove(position);
+                }
+            }
+        }
+        if (result_changes.keySet().toArray().length != 0){
+            return result_changes;
+        }
+        return null;
+    }
+
     public void render(Graphics2D grphs, int x, int y){
         for (Block block: blocks.values()){
             block.render(grphs);

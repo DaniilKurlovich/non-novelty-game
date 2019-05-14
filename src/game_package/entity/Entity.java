@@ -27,6 +27,7 @@ public abstract class Entity {
     protected boolean right;
     protected boolean action;
     protected boolean attack;
+    protected boolean switch_build;
     protected int attackSpeed;
     protected int attackDuration;
 

@@ -1,18 +1,28 @@
 package game_package.entity;
 
 import game_package.graphics.Sprite;
-import game_package.patterns.PositionData;
 import game_package.states.PlayState;
 import game_package.util.KeyHandler;
 import game_package.util.MouseHandler;
 import game_package.util.Vector2f;
+import javafx.util.Pair;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Player extends Entity {
 
     private int power = 5;
     private int hp = 100;
+    private ArrayList<Pair<String,int[][]>> buildings = new ArrayList<Pair<String,int[][]>>(
+            Arrays.asList(new Pair<>("Лампа", new int[][]{{729, 761, 793}, {730, 762, 794}}),
+                    new Pair<>("Лавка с клубникой", new int[][]{{601, 633, 665}, {602, 634, 666}}),
+                    new Pair<>("Лавка с кукурузой", new int[][]{{607, 639, 671}, {608, 640, 672}}),
+                    new Pair<>("Мешок", new int[][]{{535, 567}, {536, 568}}))
+    );
+    private int current_chouse;
+    private boolean was_switched;
 
     public Player(Sprite sprite, Vector2f orgin, int size){
         super(sprite, orgin, size);
@@ -22,6 +32,7 @@ public class Player extends Entity {
         bounds.setHeight(20);
         bounds.setXOffset(12);
         bounds.setYOffset(40);
+        current_chouse = 0;
     }
 
     @Override
@@ -37,7 +48,6 @@ public class Player extends Entity {
             enemy.getHitted(this.power);
             System.out.println("Enemy hitted");
         }
-
         action();
         move();
         if (!bounds.collisionTile(dx, 0)) {
@@ -66,6 +76,7 @@ public class Player extends Entity {
 
         g.drawImage(animation.getImage(), (int)(pos.getWorldVar().x), (int)(pos.getWorldVar().y), size,
                     size, null);
+        g.drawString(buildings.get(current_chouse).getKey(), 0, 50);
     }
 
     @Override
@@ -107,13 +118,30 @@ public class Player extends Entity {
         } else {
             action = false;
         }
+        if (key.attack.isDown){
+            attack = true;
+        }
+        else {
+            attack = false;
+        }
+        if (key.switch_building.isDown){
+            if (!was_switched)
+                current_chouse = (current_chouse + 1) % buildings.size();
+            was_switched = true;
+        }
+        else{
+            was_switched = false;
+        }
     }
 
     public void action(){
         if (action){
-            PlayState.tm.build(pos.x, pos.y, new int[][]{{729, 761, 793}, {730, 762, 794}});
+            PlayState.tm.build(pos.x, pos.y, buildings.get(current_chouse).getValue());
         }
         action = false;
+        if (attack){
+            PlayState.tm.destroy(pos.x, pos.y);
+        }
     }
 
     public void move(){
