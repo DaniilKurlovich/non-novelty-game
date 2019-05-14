@@ -143,7 +143,10 @@ public class TileManager {
     public void destroy(float x, float y) {
         int dx = (int) (x / 64);
         int dy = (int) (y / 64);
-        ((TileMapNorm)tm.get(1)).destroy(dx, dy, 32);
+        HashMap<String, String> modifed = ((TileMapNorm)tm.get(1)).destroy(dx, dy, 32);
+        if (modifed != null){
+            save_сhanges(modifed);
+        }
     }
 
     public void render(Graphics2D g, int x, int y) {
