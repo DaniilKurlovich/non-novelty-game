@@ -39,6 +39,8 @@ public class Enemy extends Entity {
         return colls.colCircleBox(posPlayer.getBounds());
     }
 
+    public boolean isAlive() { return this.hp > 0; }
+
     public Vector2f getPos() { return pos; }
 
     @Override

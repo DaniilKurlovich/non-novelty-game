@@ -2,7 +2,7 @@ package game_package.tests;
 
 
 import game_package.tile.TileManager;
-import static org.junit.Assert.*; // кавооо, что за static импорты?
+import static org.junit.Assert.*;
 
 import game_package.tile.TileMap;
 import game_package.tile.TileMapNorm;

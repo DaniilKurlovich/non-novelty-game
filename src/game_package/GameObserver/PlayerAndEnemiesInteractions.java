@@ -3,10 +3,8 @@ package game_package.GameObserver;
 import game_package.entity.Enemy;
 import game_package.entity.Player;
 import game_package.patterns.Observer;
-import game_package.util.Vector2f;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class PlayerAndEnemiesInteractions implements Observer {
     private HashMap<String,Enemy> observers = new HashMap<>();   // enemies

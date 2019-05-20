@@ -67,10 +67,10 @@ public class Player extends Entity implements Observable {
     public void getHitted(Enemy enemy){
         if (this.hp > 0){
             this.hp -= enemy.getPower();
-        } else {
-            respawn();
         }
     }
+
+    public boolean isAlive() { return this.hp > 0; }
 
     public int getPower() { return this.power; }
 
@@ -92,6 +92,7 @@ public class Player extends Entity implements Observable {
         if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
             if (hitBounds.collides(enemy.getBounds()) && attack) {
                 enemy.getHitted(this);
+                if (this.hp <= 0){ respawn();}
                 lastAttack = System.currentTimeMillis();
             }
         }
