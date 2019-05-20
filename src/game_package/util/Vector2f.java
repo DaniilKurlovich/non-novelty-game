@@ -10,6 +10,9 @@ public class Vector2f {
     public static float worldX;
     public static float worldY;
 
+    private float firstX;
+    private float firstY;
+
     public Vector2f(){
         x = 0;
         y = 0;
@@ -17,6 +20,11 @@ public class Vector2f {
 
     public Vector2f(Vector2f v){
         new Vector2f(v.x, v.y);
+    }
+
+    public void restoreCoordinates(){
+        x = firstX;
+        y = firstY;
     }
 
     public Vector2f(float x, float y){

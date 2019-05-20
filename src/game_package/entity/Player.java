@@ -1,7 +1,9 @@
 package game_package.entity;
 
+import game_package.GamePanel;
 import game_package.graphics.Sprite;
 import game_package.states.PlayState;
+import game_package.util.AABB;
 import game_package.util.KeyHandler;
 import game_package.util.MouseHandler;
 import game_package.util.Vector2f;
@@ -13,8 +15,9 @@ import java.util.Arrays;
 
 public class Player extends Entity {
 
-    private int power = 5;
-    private int hp = 100;
+    private int power = 10;
+    private int maxHp = 200;
+    private int hp = maxHp;
     private ArrayList<Pair<String,int[][]>> buildings = new ArrayList<Pair<String,int[][]>>(
             Arrays.asList(new Pair<>("Лампа", new int[][]{{729, 761, 793}, {730, 762, 794}}),
                     new Pair<>("Лавка с клубникой", new int[][]{{601, 633, 665}, {602, 634, 666}}),
@@ -23,6 +26,8 @@ public class Player extends Entity {
     );
     private int current_chouse;
     private boolean was_switched;
+    private int attackRecovery = 1;
+    private Long lastAttack = System.currentTimeMillis();
 
     public Player(Sprite sprite, Vector2f orgin, int size){
         super(sprite, orgin, size);
@@ -35,18 +40,41 @@ public class Player extends Entity {
         current_chouse = 0;
     }
 
+    public Vector2f getPos(){ return this.pos; }
+
     @Override
-    public void GameCharacters(int hp, int power) {
+    public void gameCharacters(int hp, int power) {
         this.hp = hp;
         this.power = power;
     }
 
+    private void respawn(){
+        this.hp = maxHp;
+        pos.x = GamePanel.width / 2 - 32;
+        PlayState.map.x = 0;
+
+        pos.y = GamePanel.height / 2 - 32;
+        PlayState.map.y = 0;
+    }
+
+    public void getHitted(Enemy enemy){
+        if (this.hp > 0){
+            this.hp -= enemy.getPower();
+        } else {
+            respawn();
+        }
+    }
+
+    public int getPower() { return this.power; }
+
     public void update(Enemy enemy) {
         super.update();
 
-        if (hitBounds.collides(enemy.getBounds()) && attack){
-            enemy.getHitted(this.power);
-            System.out.println("Enemy hitted");
+        if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
+            if (hitBounds.collides(enemy.getBounds()) && attack) {
+                enemy.getHitted(this);
+                lastAttack = System.currentTimeMillis();
+            }
         }
         action();
         move();
@@ -63,19 +91,26 @@ public class Player extends Entity {
 
     @Override
     public void render(Graphics2D g) {
-        //g.setColor(Color.blue);
-        //g.drawRect((int)(pos.getWorldVar().x + bounds.getxOffset()), (int)(pos.getWorldVar().y + bounds.getyOffset()),
-        //           (int)bounds.getWidth(), (int)bounds.getHeight());
-
         if (attack){
             g.setColor(Color.red);
             g.drawRect((int) (hitBounds.getPos().getWorldVar().x + hitBounds.getxOffset()),
-                       (int) (hitBounds.getPos().getWorldVar().y + hitBounds.getyOffset()),
-                       (int)hitBounds.getWidth(), (int)hitBounds.getHeight());
+                    (int) (hitBounds.getPos().getWorldVar().y + hitBounds.getyOffset()),
+                    (int)hitBounds.getWidth(), (int)hitBounds.getHeight());
+        }
+
+        if (hp > 0) {
+            g.setColor(Color.black);
+            g.fillRect((int) (pos.getWorldVar().x), (int) (pos.getWorldVar().y), size, 5);
+            g.setColor(Color.red);
+            g.fillRect((int) (pos.getWorldVar().x), (int) (pos.getWorldVar().y),
+                    (int)(size * ((double)this.hp / (double)this.maxHp)), 5);
+            g.drawImage(animation.getImage(), (int) (pos.getWorldVar().x), (int) (pos.getWorldVar().y), size,
+                    size, null);
+
         }
 
         g.drawImage(animation.getImage(), (int)(pos.getWorldVar().x), (int)(pos.getWorldVar().y), size,
-                    size, null);
+                size, null);
         g.drawString(buildings.get(current_chouse).getKey(), 0, 50);
     }
 
@@ -118,12 +153,15 @@ public class Player extends Entity {
         } else {
             action = false;
         }
-        if (key.attack.isDown){
-            attack = true;
+        if (key.build.isDown){
+            build = true;
         }
         else {
-            attack = false;
+            build = false;
         }
+
+        //System.out.println(mouse.getButton());
+
         if (key.switch_building.isDown){
             if (!was_switched)
                 current_chouse = (current_chouse + 1) % buildings.size();

@@ -10,9 +10,11 @@ public class Enemy extends Entity {
 
     private AABB colls;
 
-    private int maxHp = 500;
+    private int maxHp = 250;
     private int hp = maxHp;
     private int power = 5;
+    private double attackRecovery = 3.5;
+    private Long lastAttack = System.currentTimeMillis();
 
     public Enemy(Sprite sprt, Vector2f vector, int size) {
         super(sprt, vector, size);
@@ -31,29 +33,38 @@ public class Enemy extends Entity {
     }
 
     @Override
-    public void GameCharacters(int hp, int power) {
+    public void gameCharacters(int hp, int power) {
         this.power = power;
         this.hp = hp;
     }
 
     public void update(Player player) {
-        super.update();
-        move(player);
-        if (!colls.collisionTile(dx, 0)) {
-            colls.getPos().x += dx;
-            pos.x += dx;
-        }
-        if (!colls.collisionTile(0, dy)) {
-            colls.getPos().y += dy;
-            pos.y += dy;
-        }
+        if (hp > 0) {
+            super.update();
+            move(player);
+            if (!colls.collisionTile(dx, 0)) {
+                colls.getPos().x += dx;
+                pos.x += dx;
+            }
+            if (!colls.collisionTile(0, dy)) {
+                colls.getPos().y += dy;
+                pos.y += dy;
+            }
 
+            if (hitBounds.collides(player.getBounds())) {
+                if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
+                    lastAttack = System.currentTimeMillis();
+                    player.getHitted(this);
+                }
+            }
+        }
     }
 
-    public void getHitted(int power){
-        this.hp -= power;
-        if (hp <= 0){
-            System.out.println("Enemy dead.");
+    public int getPower(){ return power; }
+
+    public void getHitted(Player player){
+        if (this.hp > 0){
+            this.hp -= player.getPower();
         }
     }
 

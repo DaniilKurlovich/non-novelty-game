@@ -27,6 +27,7 @@ public abstract class Entity {
     protected boolean right;
     protected boolean action;
     protected boolean attack;
+    protected boolean build;
     protected boolean switch_build;
     protected int attackSpeed;
     protected int attackDuration;
@@ -42,11 +43,9 @@ public abstract class Entity {
     protected AABB bounds;
 
     private int hp;
+    private int maxHp;
 
     public Entity(Sprite sprt, Vector2f vector, int size) {
-        // game logic
-        this.hp = hp;
-
         // graphics
         this.sprite = sprt;
         this.pos = vector;
@@ -64,7 +63,7 @@ public abstract class Entity {
         this.sprite = sprite;
     }
 
-    public abstract void GameCharacters(int hp, int power);
+    public abstract void gameCharacters(int hp, int power);
 
     public int getSize() { return size; }
     public void setSize(int size) { this.size = size; }

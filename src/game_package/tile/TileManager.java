@@ -21,6 +21,8 @@ public class TileManager {
 
     public static ArrayList<TileMap> tm;
 
+    private String path;
+
     public TileManager() {
         tm = new ArrayList<TileMap>();
     }
@@ -101,7 +103,6 @@ public class TileManager {
         try {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
-            String path = "src/resource/tile/map.xml";
             Document doc = builder.parse(new File(path).toURI().toString());
             Node staff = doc.getElementsByTagName("layer").item(1);
             String data = staff.getTextContent();
@@ -140,10 +141,51 @@ public class TileManager {
         }
     }
 
+    public void save(){
+        try {
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new File(path).toURI().toString());
+            Node staff = doc.getElementsByTagName("layer").item(1);
+            String data = staff.getTextContent();
+            String[] lines = data.split("\n");
+            List<String[]> characters = new ArrayList<>();
+
+            for(String line:lines){
+                if (!line.isEmpty()) {
+                    characters.add(line.split(","));
+                }
+            }
+
+            List<String> result_line = new ArrayList<>();
+            for(String[] line:characters){
+                if (line.length > 1)
+                    result_line.add(String.join(",", line) + ",");
+            }
+            String result_data = String.join("\n", result_line);
+            staff.setTextContent(result_data.substring(0, result_data.length() - 1) + "\n");
+
+//          Запись в файл.
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(path).toURI().toString());
+            transformer.transform(source, result);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            System.out.println("ERROR - TILEMANAGER: can not read tilemap");
+        }
+    }
+
     public void destroy(float x, float y) {
         int dx = (int) (x / 64);
         int dy = (int) (y / 64);
-        ((TileMapNorm)tm.get(1)).destroy(dx, dy, 32);
+        HashMap<String, String> modifed = ((TileMapNorm)tm.get(1)).destroy(dx, dy, 32);
+        if (modifed != null){
+            System.out.println(modifed);
+            save_сhanges(modifed);
+        }
     }
 
     public void render(Graphics2D g, int x, int y) {

@@ -34,13 +34,14 @@ public class PlayState extends GameState {
 
         player = new Player(new Sprite("resource/entity/linkformatted.png", 32, 32),
                             new Vector2f((int) GamePanel.width / 2,(int)GamePanel.height / 2), 64);
-        testEnemy = new Enemy(new Sprite("resource/entity/linkformatted.png", 32, 32),
+        testEnemy = new Enemy(new Sprite("resource/entity/test.png", 32, 32),
                               new Vector2f((int) GamePanel.width / 2 + 45,(int)GamePanel.height / 2 + 70), 64);
         testEnemy.setDirectionsOnSprite(3, 0, 1, 2);
     }
 
     public void update(){
         Vector2f.setWorldVar(map.x, map.y);
+        System.out.println(String.format("Player: %s, Map: %s", player.getPos(), map));
         player.update(testEnemy);
         testEnemy.update(player);
     }
