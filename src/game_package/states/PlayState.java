@@ -4,7 +4,7 @@ import game_package.GamePanel;
 import game_package.entity.Enemy;
 import game_package.entity.Player;
 import game_package.graphics.Sprite;
-import game_package.patterns.PositionData;
+import game_package.GameObserver.PlayerAndEnemiesInteractions;
 import game_package.tile.TileManager;
 import game_package.util.KeyHandler;
 import game_package.util.MouseHandler;
@@ -20,7 +20,7 @@ public class PlayState extends GameState {
     public static TileManager tm;
 
     public static Vector2f map;
-    public static PositionData observer;
+    public static PlayerAndEnemiesInteractions observer;
 
     public Enemy testEnemy;
 
@@ -28,7 +28,7 @@ public class PlayState extends GameState {
         super(gsm);
         tm = new TileManager("src/resource/tile/map.xml", "resource/tile/map_tile.png");
         map = new Vector2f();
-        observer = new PositionData();
+        //observer = new PlayerAndEnemiesInteractions();
 
         Vector2f.setWorldVar(map.x, map.y);
 
@@ -41,7 +41,6 @@ public class PlayState extends GameState {
 
     public void update(){
         Vector2f.setWorldVar(map.x, map.y);
-        System.out.println(String.format("Player: %s, Map: %s", player.getPos(), map));
         player.update(testEnemy);
         testEnemy.update(player);
     }

@@ -2,6 +2,8 @@ package game_package.entity;
 
 import game_package.GamePanel;
 import game_package.graphics.Sprite;
+import game_package.patterns.Observable;
+import game_package.patterns.Observer;
 import game_package.states.PlayState;
 import game_package.util.AABB;
 import game_package.util.KeyHandler;
@@ -12,22 +14,26 @@ import javafx.util.Pair;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class Player extends Entity {
+public class Player extends Entity implements Observable {
 
     private int power = 10;
     private int maxHp = 200;
     private int hp = maxHp;
+
     private ArrayList<Pair<String,int[][]>> buildings = new ArrayList<Pair<String,int[][]>>(
             Arrays.asList(new Pair<>("Лампа", new int[][]{{729, 761, 793}, {730, 762, 794}}),
                     new Pair<>("Лавка с клубникой", new int[][]{{601, 633, 665}, {602, 634, 666}}),
                     new Pair<>("Лавка с кукурузой", new int[][]{{607, 639, 671}, {608, 640, 672}}),
-                    new Pair<>("Мешок", new int[][]{{535, 567}, {536, 568}}))
-    );
+                    new Pair<>("Мешок", new int[][]{{535, 567}, {536, 568}})));
     private int current_chouse;
     private boolean was_switched;
+
     private int attackRecovery = 1;
     private Long lastAttack = System.currentTimeMillis();
+
+    private List<Observer> observers;
 
     public Player(Sprite sprite, Vector2f orgin, int size){
         super(sprite, orgin, size);
@@ -86,7 +92,6 @@ public class Player extends Entity {
             PlayState.map.y += dy;
             pos.y += dy;
         }
-        PlayState.observer.setPosition(pos);
     }
 
     @Override
@@ -238,6 +243,22 @@ public class Player extends Entity {
                 }
             }
         }
+        //notifyObservers();
+    }
 
+    @Override
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers)
+            observer.update(this);
     }
 }

@@ -1,10 +1,13 @@
 package game_package.entity;
 
 import game_package.graphics.Sprite;
+import game_package.patterns.Observable;
 import game_package.util.AABB;
 import game_package.util.Vector2f;
+import game_package.patterns.Observer;
 
 import java.awt.*;
+
 
 public class Enemy extends Entity {
 
@@ -30,6 +33,10 @@ public class Enemy extends Entity {
         int test_r = 150;
 
         colls = new AABB(new Vector2f(vector.x - size / 2, vector.y - size / 2), test_r, this);
+    }
+
+    public boolean playerInCircle(Player posPlayer){
+        return colls.colCircleBox(posPlayer.getBounds());
     }
 
     @Override
