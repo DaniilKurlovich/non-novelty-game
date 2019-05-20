@@ -39,6 +39,8 @@ public class Enemy extends Entity {
         return colls.colCircleBox(posPlayer.getBounds());
     }
 
+    public Vector2f getPos() { return pos; }
+
     @Override
     public void gameCharacters(int hp, int power) {
         this.power = power;

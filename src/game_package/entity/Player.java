@@ -14,6 +14,7 @@ import javafx.util.Pair;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Player extends Entity implements Observable {
@@ -33,7 +34,7 @@ public class Player extends Entity implements Observable {
     private int attackRecovery = 1;
     private Long lastAttack = System.currentTimeMillis();
 
-    private List<Observer> observers;
+    private List<Observer> observers = new LinkedList<>();
 
     public Player(Sprite sprite, Vector2f orgin, int size){
         super(sprite, orgin, size);
@@ -73,15 +74,8 @@ public class Player extends Entity implements Observable {
 
     public int getPower() { return this.power; }
 
-    public void update(Enemy enemy) {
+    public void update(){
         super.update();
-
-        if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
-            if (hitBounds.collides(enemy.getBounds()) && attack) {
-                enemy.getHitted(this);
-                lastAttack = System.currentTimeMillis();
-            }
-        }
         action();
         move();
         if (!bounds.collisionTile(dx, 0)) {
@@ -91,6 +85,15 @@ public class Player extends Entity implements Observable {
         if (!bounds.collisionTile(0, dy)) {
             PlayState.map.y += dy;
             pos.y += dy;
+        }
+    }
+
+    public void updateWithEnemy(Enemy enemy){
+        if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
+            if (hitBounds.collides(enemy.getBounds()) && attack) {
+                enemy.getHitted(this);
+                lastAttack = System.currentTimeMillis();
+            }
         }
     }
 
@@ -243,7 +246,7 @@ public class Player extends Entity implements Observable {
                 }
             }
         }
-        //notifyObservers();
+        notifyObservers();
     }
 
     @Override
@@ -259,6 +262,6 @@ public class Player extends Entity implements Observable {
     @Override
     public void notifyObservers() {
         for (Observer observer : observers)
-            observer.update(this);
+            observer.update();
     }
 }

@@ -28,21 +28,22 @@ public class PlayState extends GameState {
         super(gsm);
         tm = new TileManager("src/resource/tile/map.xml", "resource/tile/map_tile.png");
         map = new Vector2f();
-        //observer = new PlayerAndEnemiesInteractions();
 
         Vector2f.setWorldVar(map.x, map.y);
 
         player = new Player(new Sprite("resource/entity/linkformatted.png", 32, 32),
                             new Vector2f((int) GamePanel.width / 2,(int)GamePanel.height / 2), 64);
+        observer = new PlayerAndEnemiesInteractions(player);
+        player.registerObserver(observer);
         testEnemy = new Enemy(new Sprite("resource/entity/test.png", 32, 32),
                               new Vector2f((int) GamePanel.width / 2 + 45,(int)GamePanel.height / 2 + 70), 64);
         testEnemy.setDirectionsOnSprite(3, 0, 1, 2);
+        observer.addEnemy(testEnemy);
     }
 
     public void update(){
         Vector2f.setWorldVar(map.x, map.y);
-        player.update(testEnemy);
-        testEnemy.update(player);
+        player.update();
     }
 
     public void input(MouseHandler mouse, KeyHandler key) {
