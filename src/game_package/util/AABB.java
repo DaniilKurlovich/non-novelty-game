@@ -39,6 +39,8 @@ public class AABB {
     public AABB(Vector2f firstPos, Vector2f secondPos){
         List compareVectors = firstPos.compareAndGetDelta(secondPos);
         this.pos = (Vector2f) compareVectors.get(0);
+//        System.out.println(compareVectors.get(1));
+//        System.out.println(compareVectors.toString());
         this.w = (int) compareVectors.get(1);
         this.h = (int) compareVectors.get(2);
     }

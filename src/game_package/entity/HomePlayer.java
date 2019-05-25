@@ -16,11 +16,13 @@ public class HomePlayer {
         this.coordinates.add(firstPos);
     }
 
-    public void setSecondCoordinate(Vector2f secondPos){
+    public void setSecondCoordinate(Vector2f secondPos, int hp){
         if (!this.coordinates.get(0).equalsEpsilon(secondPos)) {
             this.coordinates.add(secondPos);
             this.bounds = new AABB(this.coordinates.get(0),
                                    this.coordinates.get(1));
+            this.maxHp = hp;
+            this.curHp = hp;
         }
     }
 
@@ -35,6 +37,8 @@ public class HomePlayer {
             this.curHp = this.maxHp;
         }
     }
+
+    public int getCurHp() { return this.curHp; }
 
     public void getHitted(Enemy enemy){
         this.curHp -= enemy.getPower();

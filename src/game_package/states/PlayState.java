@@ -45,6 +45,7 @@ public class PlayState extends GameState {
     public void update(){
         Vector2f.setWorldVar(map.x, map.y);
         player.update();
+        observer.update();
     }
 
     public void input(MouseHandler mouse, KeyHandler key) {

@@ -31,9 +31,9 @@ public class PlayerAndEnemiesInteractions implements Observer {
         if (System.currentTimeMillis() > lastUpdate + checkingDelay){
             observers.forEach((key, value) -> {
                 if (value.playerInCircle(player)){
-                    value.update(player);
                     player.updateWithEnemy(value);
                 }
+                value.update(player);
             });
             lastUpdate = System.currentTimeMillis();
         }

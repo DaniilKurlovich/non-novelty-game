@@ -76,17 +76,20 @@ public class Vector2f {
 
     public List compareAndGetDelta(Vector2f other){
         ArrayList list = new ArrayList();
+        System.out.println(this);
+        System.out.println(other);
         if ((this.x > other.x) && (this.y > other.y)){
-            list.add(other);
-            list.add(this.x - other.x);
-            list.add(this.y - other.y);
+            list.add(new Vector2f(other.x, other.y));
+            list.add((int)this.x - other.x);
+            list.add((int)this.y - other.y);
             return list;
         } else {
-            list.add(other);
-            list.add(this.x - other.x);
-            list.add(this.y - other.y);
+            list.add(new Vector2f(this.x, this.y));
+            list.add((int)Math.abs(this.x - other.x));
+            list.add((int)Math.abs(this.y - other.y));
+            System.out.println(list.toString());
+            return list;
         }
-        return list;
     }
 
 }

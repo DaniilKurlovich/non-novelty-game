@@ -81,6 +81,12 @@ public class Player extends Entity implements Observable {
     public int getPower() { return this.power; }
 
     public void update(){
+        if (home != null) {
+            if (home.isHomeInited())
+            {
+                System.out.println(home.getCurHp());
+            }
+        }
         super.update();
         action();
         move();
@@ -92,6 +98,7 @@ public class Player extends Entity implements Observable {
             PlayState.map.y += dy;
             pos.y += dy;
         }
+        observers.get("ObsEnemyAndPlayer").update();
     }
 
     public void updateWithEnemy(Enemy enemy){
@@ -181,8 +188,9 @@ public class Player extends Entity implements Observable {
                 home = new HomePlayer();
                 home.setFirstCoordinate(new Vector2f(pos.x, pos.y));
             } else if (home.getCoordinates().size() == 1){
-                home.setSecondCoordinate(new Vector2f(pos.x, pos.y));
+                home.setSecondCoordinate(new Vector2f(pos.x, pos.y), maxHp * 20);
             } else if (!isHomeSet){
+                isHomeSet = true;
                 observers.get("ObsEnemyAndPlayer").update();
             }
             key.releaseAll();

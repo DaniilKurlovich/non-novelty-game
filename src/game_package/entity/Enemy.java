@@ -21,6 +21,8 @@ public class Enemy extends Entity {
     private double attackRecovery = 3.5;
     private Long lastAttack = System.currentTimeMillis();
 
+    private HomePlayer homePlayer;
+
     public Enemy(Sprite sprt, Vector2f vector, int size, boolean isFriendly) {
         super(sprt, vector, size);
 
@@ -66,14 +68,15 @@ public class Enemy extends Entity {
                 pos.y += dy;
             }
 
-            if (player.playerHaveHome()) {
-                HomePlayer home = player.getHome();
-                if (hitBounds.collides(home.getBounds())){
-                    if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
-                        lastAttack = System.currentTimeMillis();
-                        home.getHitted(this);
-                    }
+            if (player.playerHaveHome() && homePlayer == null) {
+                homePlayer = player.getHome();
+            }
+            if ((homePlayer != null) && (hitBounds.collides(homePlayer.getBounds()))){
+                if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
+                    lastAttack = System.currentTimeMillis();
+                    homePlayer.getHitted(this);
                 }
+            }
             } else {
                 if (hitBounds.collides(player.getBounds())) {
                     if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
@@ -83,13 +86,11 @@ public class Enemy extends Entity {
                 }
             }
         }
-    }
 
     public int getPower(){ return power; }
 
     public void getHitted(Player player){
         if (this.isFriendly){
-            System.out.println("was here");
             this.isFriendly = false;
             this.hp -= player.getPower();
 
@@ -109,7 +110,6 @@ public class Enemy extends Entity {
                     (int)(size * ((double)this.hp / (double)this.maxHp)), 5);
             g.drawImage(animation.getImage(), (int) (pos.getWorldVar().x), (int) (pos.getWorldVar().y), size,
                     size, null);
-
         }
     }
 
