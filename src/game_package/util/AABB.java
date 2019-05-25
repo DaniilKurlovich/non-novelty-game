@@ -8,6 +8,8 @@ import game_package.tile.blocks.HoleBlock;
 import game_package.tile.blocks.NormBlock;
 import game_package.tile.blocks.ObjBlock;
 
+import java.util.List;
+
 public class AABB {
 
     private Vector2f pos;
@@ -32,6 +34,13 @@ public class AABB {
         this.r = r;
         this.entity = ent;
         size = r;
+    }
+
+    public AABB(Vector2f firstPos, Vector2f secondPos){
+        List compareVectors = firstPos.compareAndGetDelta(secondPos);
+        this.pos = (Vector2f) compareVectors.get(0);
+        this.w = (int) compareVectors.get(1);
+        this.h = (int) compareVectors.get(2);
     }
 
     public Vector2f getPos() { return this.pos; }

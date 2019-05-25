@@ -66,10 +66,20 @@ public class Enemy extends Entity {
                 pos.y += dy;
             }
 
-            if (hitBounds.collides(player.getBounds())) {
-                if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
-                    lastAttack = System.currentTimeMillis();
-                    player.getHitted(this);
+            if (player.playerHaveHome()) {
+                HomePlayer home = player.getHome();
+                if (hitBounds.collides(home.getBounds())){
+                    if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
+                        lastAttack = System.currentTimeMillis();
+                        home.getHitted(this);
+                    }
+                }
+            } else {
+                if (hitBounds.collides(player.getBounds())) {
+                    if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
+                        lastAttack = System.currentTimeMillis();
+                        player.getHitted(this);
+                    }
                 }
             }
         }

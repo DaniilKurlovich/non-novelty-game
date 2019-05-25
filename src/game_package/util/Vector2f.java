@@ -1,6 +1,11 @@
 package game_package.util;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 public class Vector2f {
 
     public float x;
@@ -67,6 +72,21 @@ public class Vector2f {
     public boolean equalsEpsilon(Vector2f other){
         return ((other.x < this.x + epsilonCompare) && (other.x > this.x - epsilonCompare) &&
                (other.y < this.y + epsilonCompare) && (other.y > this.y - epsilonCompare));
+    }
+
+    public List compareAndGetDelta(Vector2f other){
+        ArrayList list = new ArrayList();
+        if ((this.x > other.x) && (this.y > other.y)){
+            list.add(other);
+            list.add(this.x - other.x);
+            list.add(this.y - other.y);
+            return list;
+        } else {
+            list.add(other);
+            list.add(this.x - other.x);
+            list.add(this.y - other.y);
+        }
+        return list;
     }
 
 }

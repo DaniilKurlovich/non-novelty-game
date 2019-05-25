@@ -30,7 +30,7 @@ public class Player extends Entity implements Observable {
     private int current_chouse;
     private boolean was_switched;
 
-    private List<Vector2f> coordinateHome;
+    private HomePlayer home;
     private boolean isHomeSet = false;
 
     private int attackRecovery = 1;
@@ -50,6 +50,10 @@ public class Player extends Entity implements Observable {
     }
 
     public Vector2f getPos(){ return this.pos; }
+
+    public boolean playerHaveHome() { return this.isHomeSet; }
+    public List<Vector2f> getCoordinateHome() { return home.getCoordinates(); }
+    public HomePlayer getHome() { return this.home; }
 
     @Override
     public void gameCharacters(int hp, int power) {
@@ -173,15 +177,13 @@ public class Player extends Entity implements Observable {
 
         //System.out.println(mouse.getButton());
         if (key.setHome.isDown){
-            if (coordinateHome == null){
-                coordinateHome = new ArrayList<Vector2f>();
-                coordinateHome.add(new Vector2f(pos.x, pos.y));
-            } else if (coordinateHome.size() == 1){
-                if (!coordinateHome.get(0).equalsEpsilon(pos)) {
-                    coordinateHome.add(new Vector2f(pos.x, pos.y));
-                }
+            if (home == null){
+                home = new HomePlayer();
+                home.setFirstCoordinate(new Vector2f(pos.x, pos.y));
+            } else if (home.getCoordinates().size() == 1){
+                home.setSecondCoordinate(new Vector2f(pos.x, pos.y));
             } else if (!isHomeSet){
-                observers.get("").update();
+                observers.get("ObsEnemyAndPlayer").update();
             }
             key.releaseAll();
         }
