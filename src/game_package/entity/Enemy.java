@@ -11,6 +11,8 @@ import java.awt.*;
 
 public class Enemy extends Entity {
 
+    private boolean isFriendly;
+
     private AABB colls;
 
     private int maxHp = 250;
@@ -19,8 +21,10 @@ public class Enemy extends Entity {
     private double attackRecovery = 3.5;
     private Long lastAttack = System.currentTimeMillis();
 
-    public Enemy(Sprite sprt, Vector2f vector, int size) {
+    public Enemy(Sprite sprt, Vector2f vector, int size, boolean isFriendly) {
         super(sprt, vector, size);
+
+        this.isFriendly = isFriendly;
 
         maxSpeed = 2f;
         acc = 1f;
@@ -50,7 +54,7 @@ public class Enemy extends Entity {
     }
 
     public void update(Player player) {
-        if (hp > 0) {
+        if ((hp > 0) && (! this.isFriendly)){
             super.update();
             move(player);
             if (!colls.collisionTile(dx, 0)) {
@@ -74,6 +78,12 @@ public class Enemy extends Entity {
     public int getPower(){ return power; }
 
     public void getHitted(Player player){
+        if (this.isFriendly){
+            System.out.println("was here");
+            this.isFriendly = false;
+            this.hp -= player.getPower();
+
+        }
         if (this.hp > 0){
             this.hp -= player.getPower();
         }
@@ -93,6 +103,7 @@ public class Enemy extends Entity {
         }
     }
 
+
     @Override
     public void setDirectionsOnSprite(int up, int down, int left, int right) {
         UP = up;
@@ -110,14 +121,14 @@ public class Enemy extends Entity {
 
     public void move(Player player) {
         if (colls.colCircleBox(player.getBounds())) {
-            if (pos.y > player.pos.y + 1) {
+            if (pos.y > player.pos.y + 20) {
                 down = false;
                 up = true;
                 dy -= acc;
                 if (dy < -maxSpeed) {
                     dy = -maxSpeed;
                 }
-            } else if (pos.y < player.pos.y - 1) {
+            } else if (pos.y < player.pos.y - 20) {
                 dy += acc;
                 up = false;
                 down = true;
@@ -130,14 +141,14 @@ public class Enemy extends Entity {
                 down = false;
             }
 
-            if (pos.x > player.pos.x + 1) {
+            if (pos.x > player.pos.x + 20) {
                 dx -= acc;
                 right = false;
                 left = true;
                 if (dx < -maxSpeed) {
                     dx = -maxSpeed;
                 }
-            } else if (pos.x < player.pos.x - 1) {
+            } else if (pos.x < player.pos.x - 20) {
                 dx += acc;
                 left = false;
                 right = true;

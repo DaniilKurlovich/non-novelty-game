@@ -20,7 +20,7 @@ public class TestsEnemyAndPlayerCommunications {
         player = new Player(new Sprite("resource/entity/linkformatted.png", 32, 32),
                 new Vector2f((int) GamePanel.width / 2,(int)GamePanel.height / 2), 64);
         enemy = new Enemy(new Sprite("resource/entity/test.png", 32, 32),
-                new Vector2f((int) GamePanel.width / 2 + 45,(int)GamePanel.height / 2 + 70), 64);
+                new Vector2f((int) GamePanel.width / 2 + 45,(int)GamePanel.height / 2 + 70), 64, false);
     }
 
 

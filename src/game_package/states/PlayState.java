@@ -32,11 +32,12 @@ public class PlayState extends GameState {
         Vector2f.setWorldVar(map.x, map.y);
 
         player = new Player(new Sprite("resource/entity/linkformatted.png", 32, 32),
-                            new Vector2f((int) GamePanel.width / 2,(int)GamePanel.height / 2), 64);
+                            new Vector2f((int) GamePanel.width / 2,(int)GamePanel.height / 2), 84);
         observer = new PlayerAndEnemiesInteractions(player);
-        player.registerObserver(observer);
+        player.registerObserver("ObsEnemyAndPlayer", observer);
         testEnemy = new Enemy(new Sprite("resource/entity/test.png", 32, 32),
-                              new Vector2f((int) GamePanel.width / 2 + 45,(int)GamePanel.height / 2 + 70), 64);
+                              new Vector2f((int) GamePanel.width / 2 + 45,(int)GamePanel.height / 2 + 70),
+                         64, true);
         testEnemy.setDirectionsOnSprite(3, 0, 1, 2);
         observer.addEnemy(testEnemy);
     }

@@ -50,6 +50,7 @@ public class KeyHandler implements KeyListener {
     public Key enter = new Key();
     public Key build = new Key();
     public Key switch_building = new Key();
+    public Key setHome = new Key();
 
     public KeyHandler(GamePanel game){
         game.addKeyListener(this);
@@ -78,6 +79,7 @@ public class KeyHandler implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_M) menu.toggle(pressed);
         if (e.getKeyCode() == KeyEvent.VK_SPACE) build.toggle(pressed);
         if (e.getKeyCode() == KeyEvent.VK_Q) switch_building.toggle(pressed);
+        if (e.getKeyCode() == KeyEvent.VK_B) setHome.toggle(pressed);
     }
 
     @Override

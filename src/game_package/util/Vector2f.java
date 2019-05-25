@@ -1,6 +1,5 @@
 package game_package.util;
 
-import java.util.Vector;
 
 public class Vector2f {
 
@@ -12,6 +11,8 @@ public class Vector2f {
 
     private float firstX;
     private float firstY;
+
+    private double epsilonCompare = 0.1;
 
     public Vector2f(){
         x = 0;
@@ -60,4 +61,12 @@ public class Vector2f {
     public String toString() {
         return x + ", " + y;
     }
+
+    public void setEpsilon(double epsilon) { this.epsilonCompare = epsilon; }
+
+    public boolean equalsEpsilon(Vector2f other){
+        return ((other.x < this.x + epsilonCompare) && (other.x > this.x - epsilonCompare) &&
+               (other.y < this.y + epsilonCompare) && (other.y > this.y - epsilonCompare));
+    }
+
 }

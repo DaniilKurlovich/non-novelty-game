@@ -12,9 +12,7 @@ import game_package.util.Vector2f;
 import javafx.util.Pair;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 
 public class Player extends Entity implements Observable {
@@ -24,17 +22,21 @@ public class Player extends Entity implements Observable {
     private int hp = maxHp;
 
     private ArrayList<Pair<String,int[][]>> buildings = new ArrayList<Pair<String,int[][]>>(
-            Arrays.asList(new Pair<>("Лампа", new int[][]{{729, 761, 793}, {730, 762, 794}}),
+            Arrays.asList(
+                    new Pair<>("Лампа", new int[][]{{729, 761, 793}, {730, 762, 794}}),
                     new Pair<>("Лавка с клубникой", new int[][]{{601, 633, 665}, {602, 634, 666}}),
                     new Pair<>("Лавка с кукурузой", new int[][]{{607, 639, 671}, {608, 640, 672}}),
                     new Pair<>("Мешок", new int[][]{{535, 567}, {536, 568}})));
     private int current_chouse;
     private boolean was_switched;
 
+    private List<Vector2f> coordinateHome;
+    private boolean isHomeSet = false;
+
     private int attackRecovery = 1;
     private Long lastAttack = System.currentTimeMillis();
 
-    private List<Observer> observers = new LinkedList<>();
+    private HashMap<String, Observer> observers = new HashMap<String, Observer>();
 
     public Player(Sprite sprite, Vector2f orgin, int size){
         super(sprite, orgin, size);
@@ -170,6 +172,19 @@ public class Player extends Entity implements Observable {
         }
 
         //System.out.println(mouse.getButton());
+        if (key.setHome.isDown){
+            if (coordinateHome == null){
+                coordinateHome = new ArrayList<Vector2f>();
+                coordinateHome.add(new Vector2f(pos.x, pos.y));
+            } else if (coordinateHome.size() == 1){
+                if (!coordinateHome.get(0).equalsEpsilon(pos)) {
+                    coordinateHome.add(new Vector2f(pos.x, pos.y));
+                }
+            } else if (!isHomeSet){
+                observers.get("").update();
+            }
+            key.releaseAll();
+        }
 
         if (key.switch_building.isDown){
             if (!was_switched)
@@ -251,8 +266,8 @@ public class Player extends Entity implements Observable {
     }
 
     @Override
-    public void registerObserver(Observer o) {
-        observers.add(o);
+    public void registerObserver(String observerName, Observer o) {
+        observers.put(observerName, o);
     }
 
     @Override
@@ -262,7 +277,7 @@ public class Player extends Entity implements Observable {
 
     @Override
     public void notifyObservers() {
-        for (Observer observer : observers)
-            observer.update();
+        for (String key : observers.keySet())
+            observers.get(key).update();
     }
 }
