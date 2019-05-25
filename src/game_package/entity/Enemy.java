@@ -130,15 +130,62 @@ public class Enemy extends Entity {
     }
 
     public void move(Player player) {
-        if (colls.colCircleBox(player.getBounds())) {
-            if (pos.y > player.pos.y + 20) {
+        if (homePlayer == null | isFriendly) {
+            if (colls.colCircleBox(player.getBounds())) {
+                if (pos.y > player.pos.y + 20) {
+                    down = false;
+                    up = true;
+                    dy -= acc;
+                    if (dy < -maxSpeed) {
+                        dy = -maxSpeed;
+                    }
+                } else if (pos.y < player.pos.y - 20) {
+                    dy += acc;
+                    up = false;
+                    down = true;
+                    if (dy > maxSpeed) {
+                        dy = maxSpeed;
+                    }
+                } else {
+                    dy = 0;
+                    up = false;
+                    down = false;
+                }
+
+                if (pos.x > player.pos.x + 20) {
+                    dx -= acc;
+                    right = false;
+                    left = true;
+                    if (dx < -maxSpeed) {
+                        dx = -maxSpeed;
+                    }
+                } else if (pos.x < player.pos.x - 20) {
+                    dx += acc;
+                    left = false;
+                    right = true;
+                    if (dx > maxSpeed) {
+                        dx = maxSpeed;
+                    }
+                } else {
+                    dx = 0;
+                    right = false;
+                    left = false;
+                }
+
+            } else {
+                setDirections(false, false, false, false);
+                dx = 0;
+                dy = 0;
+            }
+        } else {
+            if (pos.y > homePlayer.getCoordinates().get(0).y + 20) {
                 down = false;
                 up = true;
                 dy -= acc;
                 if (dy < -maxSpeed) {
                     dy = -maxSpeed;
                 }
-            } else if (pos.y < player.pos.y - 20) {
+            } else if (pos.y < homePlayer.getCoordinates().get(0).y - 20) {
                 dy += acc;
                 up = false;
                 down = true;
@@ -151,14 +198,14 @@ public class Enemy extends Entity {
                 down = false;
             }
 
-            if (pos.x > player.pos.x + 20) {
+            if (pos.x > homePlayer.getCoordinates().get(0).x + 20) {
                 dx -= acc;
                 right = false;
                 left = true;
                 if (dx < -maxSpeed) {
                     dx = -maxSpeed;
                 }
-            } else if (pos.x < player.pos.x - 20) {
+            } else if (pos.x < homePlayer.getCoordinates().get(0).x - 20) {
                 dx += acc;
                 left = false;
                 right = true;
@@ -170,11 +217,11 @@ public class Enemy extends Entity {
                 right = false;
                 left = false;
             }
-
-        } else {
-            setDirections(false, false, false, false);
-            dx = 0;
-            dy = 0;
         }
+//        } else {
+//            setDirections(false, false, false, false);
+//            dx = 0;
+//            dy = 0;
+//        }
     }
 }

@@ -3,6 +3,7 @@ package game_package.entity;
 import game_package.util.AABB;
 import game_package.util.Vector2f;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class HomePlayer {
     public void setSecondCoordinate(Vector2f secondPos, int hp){
         if (!this.coordinates.get(0).equalsEpsilon(secondPos)) {
             this.coordinates.add(secondPos);
+            if (this.coordinates.get(0).x > this.coordinates.get(1).x){
+                Collections.reverse(this.coordinates);
+            }
             this.bounds = new AABB(this.coordinates.get(0),
                                    this.coordinates.get(1));
             this.maxHp = hp;
