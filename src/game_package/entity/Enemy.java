@@ -56,36 +56,50 @@ public class Enemy extends Entity {
     }
 
     public void update(Player player) {
-        if ((hp > 0) && (! this.isFriendly)){
+        if (isAlive()) {
             super.update();
             move(player);
-            if (!colls.collisionTile(dx, 0)) {
-                colls.getPos().x += dx;
-                pos.x += dx;
-            }
-            if (!colls.collisionTile(0, dy)) {
-                colls.getPos().y += dy;
-                pos.y += dy;
-            }
 
             if (player.playerHaveHome() && homePlayer == null) {
                 homePlayer = player.getHome();
             }
-            if ((homePlayer != null) && (hitBounds.collides(homePlayer.getBounds()))){
-                if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
-                    lastAttack = System.currentTimeMillis();
-                    homePlayer.getHitted(this);
+
+            if (this.isFriendly){
+                if (!colls.collisionTile(dx, 0)) {
+                    colls.getPos().x += dx;
+                    pos.x += dx;
                 }
-            }
-            } else {
-                if (hitBounds.collides(player.getBounds())) {
+                if (!colls.collisionTile(0, dy)) {
+                    colls.getPos().y += dy;
+                    pos.y += dy;
+                }
+
+                if ((homePlayer != null) && (hitBounds.collides(homePlayer.getBounds()))){
                     if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
                         lastAttack = System.currentTimeMillis();
-                        player.getHitted(this);
+                        homePlayer.getHitted(this);
                     }
                 }
+        } else {
+                if (!colls.collisionTile(dx, 0)) {
+                    colls.getPos().x += dx;
+                    pos.x += dx;
+                }
+                if (!colls.collisionTile(0, dy)) {
+                    colls.getPos().y += dy;
+                    pos.y += dy;
+                }
+            if (hitBounds.collides(player.getBounds())) {
+                if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
+                    lastAttack = System.currentTimeMillis();
+                    player.getHitted(this);
+                }
+            } else {
+                this.isFriendly = true;
             }
         }
+        }
+    }
 
     public int getPower(){ return power; }
 
@@ -129,8 +143,45 @@ public class Enemy extends Entity {
         down = _down;
     }
 
+
     public void move(Player player) {
-        if (homePlayer == null | isFriendly) {
+        if (homePlayer != null && isFriendly){
+            if (pos.y > homePlayer.getCoordinates().get(0).y + 20) {
+                down = false;
+                up = true;
+                dy -= acc;
+                if (dy < -maxSpeed) {
+                    dy = -maxSpeed;
+                }
+            } else if (pos.y < homePlayer.getCoordinates().get(0).y - 20) {
+                dy += acc;
+                up = false;
+                down = true;
+                if (dy > maxSpeed) {
+                    dy = maxSpeed;
+                }
+            } else {
+                dy = 0;
+                up = false;
+                down = false;
+            }
+
+            if (pos.x > homePlayer.getCoordinates().get(0).x + 20) {
+                dx -= acc;
+                right = false;
+                left = true;
+                if (dx < -maxSpeed) {
+                    dx = -maxSpeed;
+                }
+            } else if (pos.x < homePlayer.getCoordinates().get(0).x - 20) {
+                dx += acc;
+                left = false;
+                right = true;
+                if (dx > maxSpeed) {
+                    dx = maxSpeed;
+                }
+            }
+        } else if (!isFriendly) {
             if (colls.colCircleBox(player.getBounds())) {
                 if (pos.y > player.pos.y + 20) {
                     down = false;
@@ -171,57 +222,11 @@ public class Enemy extends Entity {
                     right = false;
                     left = false;
                 }
-
             } else {
                 setDirections(false, false, false, false);
                 dx = 0;
                 dy = 0;
             }
-        } else {
-            if (pos.y > homePlayer.getCoordinates().get(0).y + 20) {
-                down = false;
-                up = true;
-                dy -= acc;
-                if (dy < -maxSpeed) {
-                    dy = -maxSpeed;
-                }
-            } else if (pos.y < homePlayer.getCoordinates().get(0).y - 20) {
-                dy += acc;
-                up = false;
-                down = true;
-                if (dy > maxSpeed) {
-                    dy = maxSpeed;
-                }
-            } else {
-                dy = 0;
-                up = false;
-                down = false;
-            }
-
-            if (pos.x > homePlayer.getCoordinates().get(0).x + 20) {
-                dx -= acc;
-                right = false;
-                left = true;
-                if (dx < -maxSpeed) {
-                    dx = -maxSpeed;
-                }
-            } else if (pos.x < homePlayer.getCoordinates().get(0).x - 20) {
-                dx += acc;
-                left = false;
-                right = true;
-                if (dx > maxSpeed) {
-                    dx = maxSpeed;
-                }
-            } else {
-                dx = 0;
-                right = false;
-                left = false;
-            }
         }
-//        } else {
-//            setDirections(false, false, false, false);
-//            dx = 0;
-//            dy = 0;
-//        }
     }
 }

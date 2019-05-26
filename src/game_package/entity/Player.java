@@ -81,12 +81,12 @@ public class Player extends Entity implements Observable {
     public int getPower() { return this.power; }
 
     public void update(){
-        if (home != null) {
-            if (home.isHomeInited())
-            {
-                System.out.println(home.getCurHp());
-            }
-        }
+//        if (home != null) {
+//            if (home.isHomeInited())
+//            {
+//                System.out.println(home.getCurHp());
+//            }
+//        }
         super.update();
         action();
         move();
