@@ -51,7 +51,7 @@ public class Player extends Entity implements Observable {
 
     public Vector2f getPos(){ return this.pos; }
 
-    public boolean playerHaveHome() { return this.isHomeSet; }
+    public boolean haveHome() { return this.isHomeSet; }
     public List<Vector2f> getCoordinateHome() { return home.getCoordinates(); }
     public HomePlayer getHome() { return this.home; }
 

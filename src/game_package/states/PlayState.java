@@ -34,7 +34,7 @@ public class PlayState extends GameState {
         player = new Player(new Sprite("resource/entity/linkformatted.png", 32, 32),
                             new Vector2f((int) GamePanel.width / 2,(int)GamePanel.height / 2), 84);
         observer = new PlayerAndEnemiesInteractions(player, new int[]{(int) GamePanel.width / 2 + 45,
-                                                                      (int)GamePanel.height / 2 + 70});
+                                                                      (int) GamePanel.height / 2 + 70});
         player.registerObserver("ObsEnemyAndPlayer", observer);
         testEnemy = new Enemy(new Sprite("resource/entity/1.png", 32, 32),
                               new Vector2f((int) GamePanel.width / 2 + 45,(int)GamePanel.height / 2 + 70),
@@ -55,6 +55,7 @@ public class PlayState extends GameState {
     public void render(Graphics2D grphs) {
         tm.render(grphs,(int)Vector2f.worldX, (int)Vector2f.worldY );
         player.render(grphs);
+        observer.render(grphs);
         testEnemy.render(grphs);
     }
 

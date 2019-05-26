@@ -1,10 +1,8 @@
 package game_package.entity;
 
 import game_package.graphics.Sprite;
-import game_package.patterns.Observable;
 import game_package.util.AABB;
 import game_package.util.Vector2f;
-import game_package.patterns.Observer;
 
 import java.awt.*;
 
@@ -60,7 +58,7 @@ public class Enemy extends Entity {
             super.update();
             move(player);
 
-            if (player.playerHaveHome() && homePlayer == null) {
+            if (player.haveHome() && homePlayer == null) {
                 homePlayer = player.getHome();
             }
 
