@@ -34,7 +34,6 @@ public class PlayerAndEnemiesInteractions implements Observer {
     public void addEnemy(Enemy enemy){
         countsEnemy += 1;
         observers.add(enemy);
-        System.out.println(observers.toString());
     }
 
     public void removeEnemy(Enemy enemy, boolean isGenerateNewEnemy){
@@ -50,7 +49,6 @@ public class PlayerAndEnemiesInteractions implements Observer {
     }
 
     private Enemy getRandomEnemy(){
-        System.out.println("KEK");
         String[] spriteArray = {
                 "resource/entity/1.png",
                 "resource/entity/2.png",

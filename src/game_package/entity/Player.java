@@ -131,6 +131,10 @@ public class Player extends Entity implements Observable {
 
         }
 
+        if (isHomeSet){
+            home.render(g);
+        }
+
         g.drawImage(animation.getImage(), (int)(pos.getWorldVar().x), (int)(pos.getWorldVar().y), size,
                 size, null);
         g.drawString(buildings.get(current_chouse).getKey(), 0, 50);
