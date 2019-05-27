@@ -42,4 +42,9 @@ public class TestsEnemyAndPlayerCommunications {
         initTest();
     }
 
+    @Test
+    public void checkBoundWithEnemy(){
+
+    }
+
 }

@@ -18,10 +18,10 @@ public class TestEnemyAndHomePlayer {
     @Before
     public void initTest(){
         homePlayer = new HomePlayer();
-        homePlayer.setFirstCoordinate(new Vector2f(0, 0));
-        homePlayer.setSecondCoordinate(new Vector2f(20, 20), 100);
+        homePlayer.setFirstCoordinate(new Vector2f(381, 579));
+        homePlayer.setSecondCoordinate(new Vector2f(632, 836), 100);
         enemy = new Enemy(new Sprite("resource/entity/1.png", 32, 32),
-                new Vector2f((int) GamePanel.width / 2 + 45,(int)GamePanel.height / 2 + 70), 64,
+                new Vector2f(554, 561), 64,
                 false);
     }
 
@@ -31,5 +31,10 @@ public class TestEnemyAndHomePlayer {
         homePlayer.getHitted(enemy);
         System.out.println(homePlayer.getCurHp());
         assertTrue(homePlayer.homeIsBroke());
+    }
+
+    @Test
+    public void testBounds(){
+        assertTrue(enemy.collisionWith(homePlayer.getBounds()));
     }
 }

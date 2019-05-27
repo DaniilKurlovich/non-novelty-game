@@ -47,6 +47,12 @@ public class Enemy extends Entity {
 
     public Vector2f getPos() { return pos; }
 
+    public boolean collisionWith(AABB otherBound){
+        return this.hitBounds.collides(otherBound);
+    }
+
+
+
     @Override
     public void gameCharacters(int hp, int power) {
         this.power = power;
@@ -73,6 +79,7 @@ public class Enemy extends Entity {
                 }
 
                 if ((homePlayer != null) && (hitBounds.collides(homePlayer.getBounds()))){
+                    System.out.println(pos + " " + homePlayer.getCoordinates());
                     if (System.currentTimeMillis() > lastAttack + attackRecovery * 60) {
                         lastAttack = System.currentTimeMillis();
                         homePlayer.getHitted(this);
